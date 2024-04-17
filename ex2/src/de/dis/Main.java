@@ -1,6 +1,7 @@
 package de.dis;
 
-import de.dis.data.Makler;
+import de.dis.menu.Menu;
+import static de.dis.menu.MaklerMenu.showMaklerMenu;
 
 /**
  * Hauptklasse
@@ -19,11 +20,15 @@ public class Main {
 	public static void showMainMenu() {
 		//Menüoptionen
 		final int MENU_MAKLER = 0;
-		final int QUIT = 1;
+		final int MENU_ESTATE = 1;
+		final int MENU_CONTRACT = 2;
+		final int QUIT = 3;
 		
 		//Erzeuge Menü
 		Menu mainMenu = new Menu("Hauptmenü");
 		mainMenu.addEntry("Makler-Verwaltung", MENU_MAKLER);
+		mainMenu.addEntry("Landgut-Verwaltung", MENU_ESTATE);
+		mainMenu.addEntry("Vertrag-Verwaltung", MENU_CONTRACT);
 		mainMenu.addEntry("Beenden", QUIT);
 		
 		//Verarbeite Eingabe
@@ -34,52 +39,15 @@ public class Main {
 				case MENU_MAKLER:
 					showMaklerMenu();
 					break;
+				case MENU_ESTATE:
+					showMaklerMenu();
+					break;
+				case MENU_CONTRACT:
+					showMaklerMenu();
+					break;
 				case QUIT:
 					return;
 			}
 		}
-	}
-	
-	/**
-	 * Zeigt die Maklerverwaltung
-	 */
-	public static void showMaklerMenu() {
-		//Menüoptionen
-		final int NEW_MAKLER = 0;
-		final int BACK = 1;
-		
-		//Maklerverwaltungsmenü
-		Menu maklerMenu = new Menu("Makler-Verwaltung");
-		maklerMenu.addEntry("Neuer Makler", NEW_MAKLER);
-		maklerMenu.addEntry("Zurück zum Hauptmenü", BACK);
-		
-		//Verarbeite Eingabe
-		while(true) {
-			int response = maklerMenu.show();
-			
-			switch(response) {
-				case NEW_MAKLER:
-					newMakler();
-					break;
-				case BACK:
-					return;
-			}
-		}
-	}
-	
-	/**
-	 * Legt einen neuen Makler an, nachdem der Benutzer
-	 * die entprechenden Daten eingegeben hat.
-	 */
-	public static void newMakler() {
-		Makler m = new Makler();
-		
-		m.setName(FormUtil.readString("Name"));
-		m.setAddress(FormUtil.readString("Adresse"));
-		m.setLogin(FormUtil.readString("Login"));
-		m.setPassword(FormUtil.readString("Passwort"));
-		m.save();
-		
-		System.out.println("Makler mit der ID "+m.getId()+" wurde erzeugt.");
 	}
 }

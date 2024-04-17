@@ -1,4 +1,4 @@
-package de.dis;
+package de.dis.menu;
 
 import java.io.BufferedReader;
 import java.io.IOException;

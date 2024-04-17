@@ -112,7 +112,7 @@ public class Makler {
 			if (getId() == -1) {
 				// Achtung, hier wird noch ein Parameter mitgegeben,
 				// damit spC$ter generierte IDs zurC<ckgeliefert werden!
-				String insertSQL = "INSERT INTO makler(name, address, login, password) VALUES (?, ?, ?, ?)";
+				String insertSQL = "INSERT INTO estateagent(name, address, login, password) VALUES (?, ?, ?, ?)";
 
 				PreparedStatement pstmt = con.prepareStatement(insertSQL,
 						Statement.RETURN_GENERATED_KEYS);
@@ -134,7 +134,7 @@ public class Makler {
 				pstmt.close();
 			} else {
 				// Falls schon eine ID vorhanden ist, mache ein Update...
-				String updateSQL = "UPDATE makler SET name = ?, address = ?, login = ?, password = ? WHERE id = ?";
+				String updateSQL = "UPDATE estateagent SET name = ?, address = ?, login = ?, password = ? WHERE id = ?";
 				PreparedStatement pstmt = con.prepareStatement(updateSQL);
 
 				// Setze Anfrage Parameter
@@ -147,6 +147,23 @@ public class Makler {
 
 				pstmt.close();
 			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void delete() {
+		Connection con = DbConnectionManager.getInstance().getConnection();
+		try {
+			String deleteSQL = "DELETE FROM estateagent WHERE id = ?";
+
+			PreparedStatement pstmt = con.prepareStatement(deleteSQL,
+					Statement.RETURN_GENERATED_KEYS);
+
+			// Setze Anfrageparameter und fC<hre Anfrage aus
+			pstmt.setInt(1, getId());
+			pstmt.executeUpdate();
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
