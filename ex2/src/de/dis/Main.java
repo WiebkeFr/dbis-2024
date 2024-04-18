@@ -1,6 +1,8 @@
 package de.dis;
 
 import de.dis.menu.Menu;
+
+import static de.dis.menu.ContractMenu.showContractMenu;
 import static de.dis.menu.MaklerMenu.showMaklerMenu;
 
 /**
@@ -43,7 +45,7 @@ public class Main {
 					showMaklerMenu();
 					break;
 				case MENU_CONTRACT:
-					showMaklerMenu();
+					showContractMenu();
 					break;
 				case QUIT:
 					return;

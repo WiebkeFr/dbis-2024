@@ -3,7 +3,9 @@ package de.dis.menu;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 /**
  * Kleine Helferklasse zum Einlesen von Formulardaten
  */
@@ -48,5 +50,23 @@ public class FormUtil {
 		}
 		
 		return ret;
+	}
+
+	public static LocalDate readDate(String label) {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		LocalDate date = null;
+		boolean finished = false;
+
+		while (!finished) {
+			String line = readString(label + " (format yyyy-MM-dd)");
+			try {
+				date = LocalDate.parse(line, formatter);
+				finished = true;
+			} catch (DateTimeParseException e) {
+				System.err.println("Ungültige Eingabe: Bitte geben Sie das Datum im Format yyyy-MM-dd an.");
+			}
+		}
+
+		return date;
 	}
 }
