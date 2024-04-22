@@ -69,4 +69,27 @@ public class FormUtil {
 
 		return date;
 	}
+
+	public static String editValue(String type, String oldValue) {
+		String label = type;
+		if (oldValue.length() != 0) {
+			label += " (default: \'" + oldValue + "\')";
+		}
+		String input = FormUtil.readString(label);
+		return input.length() == 0 ? oldValue: input;
+	}
+
+	public static int editValue(String type, int oldValue) {
+		String label = type;
+		if (oldValue != -1) {
+			label += " (current: " + oldValue + ")";
+		}
+		return FormUtil.readInt(label);
+	}
+
+	public static boolean editValue(String type, boolean oldValue) {
+		String oldValueString = oldValue ? "ja": "nein";
+		String input = FormUtil.readString(type + " (default: \'" + oldValueString + "\')");
+		return input.length() == 0 ? oldValue : input.equals("ja");
+	}
 }

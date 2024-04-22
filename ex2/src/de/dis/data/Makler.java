@@ -75,7 +75,7 @@ public class Makler {
 			Connection con = DbConnectionManager.getInstance().getConnection();
 
 			// Erzeuge Anfrage
-			String selectSQL = "SELECT * FROM makler WHERE id = ?";
+			String selectSQL = "SELECT * FROM estateagent WHERE id = ?";
 			PreparedStatement pstmt = con.prepareStatement(selectSQL);
 			pstmt.setInt(1, id);
 
@@ -98,7 +98,49 @@ public class Makler {
 		}
 		return null;
 	}
-	
+
+	/*
+	* Login eines Maklers
+	* @param id ID des einloggenden Maklers
+	* @param login Login des einloggenden Maklers
+	* @param password Passwort des einloggenden Maklers
+	* @return Makler-Instanz
+	* @throws LoginError
+	* */
+	public static Makler login(int id, String login, String password) {
+		try {
+			// Hole Verbindung
+			Connection con = DbConnectionManager.getInstance().getConnection();
+
+			// Erzeuge Anfrage
+			String selectSQL = "SELECT * FROM estateagent WHERE id = ? AND login = ? AND password = ?";
+			PreparedStatement pstmt = con.prepareStatement(selectSQL);
+			pstmt.setInt(1, id);
+			pstmt.setString(2, login);
+			pstmt.setString(3, password);
+
+			// Führe Anfrage aus
+			ResultSet rs = pstmt.executeQuery();
+			if (rs.next()) {
+				Makler ts = new Makler();
+				ts.setId(id);
+				ts.setName(rs.getString("name"));
+				ts.setAddress(rs.getString("address"));
+				ts.setLogin(rs.getString("login"));
+				ts.setPassword(rs.getString("password"));
+
+				rs.close();
+				pstmt.close();
+				return ts;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		Makler ts = new Makler();
+		ts.setId(-1);
+		return ts;
+	}
+
 	/**
 	 * Speichert den Makler in der Datenbank. Ist noch keine ID vergeben
 	 * worden, wird die generierte Id von der DB geholt und dem Model übergeben.

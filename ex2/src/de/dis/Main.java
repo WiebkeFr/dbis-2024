@@ -4,6 +4,7 @@ import de.dis.menu.Menu;
 
 import static de.dis.menu.ContractMenu.showContractMenu;
 import static de.dis.menu.MaklerMenu.showMaklerMenu;
+import static de.dis.menu.EstateMenu.showEstateMenu;
 
 /**
  * Hauptklasse
@@ -42,7 +43,7 @@ public class Main {
 					showMaklerMenu();
 					break;
 				case MENU_ESTATE:
-					showMaklerMenu();
+					showEstateMenu();
 					break;
 				case MENU_CONTRACT:
 					showContractMenu();

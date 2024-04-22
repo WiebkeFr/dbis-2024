@@ -7,7 +7,7 @@ public class MaklerMenu {
      * Zeigt die Maklerverwaltung
      */
     public static void showMaklerMenu() {
-        // Passwort-Abfrage TODO
+
         String pw = FormUtil.readString("Geben Sie Ihr Passwort ein");
         if (!pw.equals("1234")) {
             System.out.println("Sie haben keine Berechtigung zum Makler-Menu!\n");
@@ -71,16 +71,15 @@ public class MaklerMenu {
      */
     public static void editMakler() {
         int id = FormUtil.readInt("Geben Sie die ID des zu bearbeitenden Maklers ein");
-        Makler m = new Makler();
-        m.setId(id);
+        Makler m = Makler.load(id);
 
-        m.setName(FormUtil.readString("Name"));
-        m.setAddress(FormUtil.readString("Adresse"));
-        m.setLogin(FormUtil.readString("Login"));
-        m.setPassword(FormUtil.readString("Passwort"));
+        m.setName(FormUtil.editValue("Name", m.getName()));
+        m.setAddress(FormUtil.editValue("Adresse", m.getAddress()));
+        m.setLogin(FormUtil.editValue("Login", m.getLogin()));
+        m.setPassword(FormUtil.editValue("Passwort", m.getPassword()));
         m.save();
 
-        System.out.println("Makler mit der ID"+m.getId()+" wurde bearbeitet.\n");
+        System.out.println("Makler mit der ID "+m.getId()+" wurde bearbeitet.\n");
     }
 
     /**
