@@ -90,31 +90,32 @@ public class ContractMenu {
     public static void createTenancyContract() {
         int contractId = newContract();
         // get apartment id, ill add this when the estate classes are created
-        // int apartment = FormUtil.readInt("Apartment ID");
-        // Apartment apartment = Apartment.load(apartmentId);
-        // apartment.setContractId(contractId);
-        // apartment.save();
-
         TenancyContract tc = new TenancyContract();
         tc.setContractId(contractId);
         tc.setDate(FormUtil.readDate("Date"));
         tc.setDuration(FormUtil.readInt("Duration"));
         tc.setAdditionalcosts(FormUtil.readInt("Additionalcosts"));
         tc.save();
+
+        int apartmentId = FormUtil.readInt("Apartment Estate ID");
+        Apartment apartment = Apartment.load(apartmentId);
+        apartment.setContractId(tc.getId());
+        apartment.save();
     }
 
     public static void createPurchaseContract() {
         int contractId = newContract();
         // get house id, ill add this when the estate classes are created
-        // int houseId = FormUtil.readInt("House ID");
-        // House house = House.load(houseId);
-        // house.setContractId(contractId);
-        // house.save();
         PurchaseContract pc = new PurchaseContract();
         pc.setContractId(contractId);
         pc.setInterestRate(FormUtil.readInt("Interest Rate"));
         pc.setNoInstalments(FormUtil.readInt("No-Instalments"));
         pc.save();
+
+        int houseId = FormUtil.readInt("House Estate ID");
+        House house = House.load(houseId);
+        house.setContractId(pc.getId());
+        house.save();
     }
 
     public static void contractOverview() {

@@ -128,7 +128,7 @@ public class Apartment {
             if (getId() == -1) {
                 // Achtung, hier wird noch ein Parameter mitgegeben,
                 // damit spC$ter generierte IDs zurC<ckgeliefert werden!
-                String insertSQL = "INSERT INTO apartment(floor, rent, rooms, balcony, elevator, estateid) VALUES (?, ?, ?, ?, ?, ?)";
+                String insertSQL = "INSERT INTO apartment(floor, rent, rooms, balcony, elevator, estateid, contractid) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
                 PreparedStatement pstmt = con.prepareStatement(insertSQL,
                         Statement.RETURN_GENERATED_KEYS);
@@ -140,6 +140,7 @@ public class Apartment {
                 pstmt.setBoolean(4, getBalcony());
                 pstmt.setBoolean(5, getElevator());
                 pstmt.setInt(6, getEstateId());
+                pstmt.setInt(7, getContractId());
                 pstmt.executeUpdate();
 
                 // Hole die Id des engefC<gten Datensatzes
@@ -152,7 +153,7 @@ public class Apartment {
                 pstmt.close();
             } else {
                 // Falls schon eine ID vorhanden ist, mache ein Update...
-                String updateSQL = "UPDATE apartment SET floor = ?, rent = ?, rooms = ?, balcony = ?, elevator = ?, estateid = ? WHERE id = ?";
+                String updateSQL = "UPDATE apartment SET floor = ?, rent = ?, rooms = ?, balcony = ?, elevator = ?, estateid = ?, contractid = ? WHERE id = ?";
                 PreparedStatement pstmt = con.prepareStatement(updateSQL);
 
                 // Setze Anfrage Parameter
@@ -162,7 +163,8 @@ public class Apartment {
                 pstmt.setBoolean(4, getBalcony());
                 pstmt.setBoolean(5, getElevator());
                 pstmt.setInt(6, getEstateId());
-                pstmt.setInt(7, getId());
+                pstmt.setInt(7, getContractId());
+                pstmt.setInt(8, getId());
                 pstmt.executeUpdate();
 
                 pstmt.close();

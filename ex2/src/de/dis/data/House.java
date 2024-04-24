@@ -97,7 +97,7 @@ public class House {
             if (getId() == -1) {
                 // Achtung, hier wird noch ein Parameter mitgegeben,
                 // damit spC$ter generierte IDs zurC<ckgeliefert werden!
-                String insertSQL = "INSERT INTO house(estateid, price, garden) VALUES (?, ?, ?)";
+                String insertSQL = "INSERT INTO house(estateid, price, garden, contractid) VALUES (?, ?, ?, ?)";
 
                 PreparedStatement pstmt = con.prepareStatement(insertSQL,
                         Statement.RETURN_GENERATED_KEYS);
@@ -106,6 +106,7 @@ public class House {
                 pstmt.setInt(1, getEstateId());
                 pstmt.setInt(2, getPrice());
                 pstmt.setBoolean(3, getGarden());
+                pstmt.setInt(4, getContractId());
                 pstmt.executeUpdate();
 
                 // Hole die Id des engefC<gten Datensatzes
@@ -118,14 +119,15 @@ public class House {
                 pstmt.close();
             } else {
                 // Falls schon eine ID vorhanden ist, mache ein Update...
-                String updateSQL = "UPDATE house SET estateid = ?, price = ?, garden = ? WHERE id = ?";
+                String updateSQL = "UPDATE house SET estateid = ?, price = ?, garden = ?, contractid = ? WHERE id = ?";
                 PreparedStatement pstmt = con.prepareStatement(updateSQL);
 
                 // Setze Anfrage Parameter
                 pstmt.setInt(1, getEstateId());
                 pstmt.setInt(2, getPrice());
                 pstmt.setBoolean(3, getGarden());
-                pstmt.setInt(4, getId());
+                pstmt.setInt(4, getContractId());
+                pstmt.setInt(5, getId());
                 pstmt.executeUpdate();
 
                 pstmt.close();
