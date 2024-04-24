@@ -66,8 +66,8 @@ public class EstateMenu {
         e.setStreet(FormUtil.readString("Straße"));
         e.setStreetNumber(FormUtil.readInt("Straßennummer"));
         e.setSquareArea(FormUtil.readInt("Grundfläche in m^2"));
-        boolean isHouse = FormUtil.readString("Handelt es sich bei dem Landgut um Haus? (ja/nein)").equals("ja");
 
+        boolean isHouse = FormUtil.readString("Handelt es sich bei dem Landgut um Haus? (ja/nein)").equals("ja");
         e.setIsHouse(isHouse);
         e.save();
 
@@ -117,7 +117,6 @@ public class EstateMenu {
         int id = FormUtil.readInt("Geben Sie die ID des zu bearbeitende Landgut ein");
         Estate e = Estate.load(id);
         boolean oldIsHouse = e.getIsHouse();
-        System.out.println("id "+ e.getId());
 
         e.setAgentId(FormUtil.editValue("Korrespondierender Makler (ID)", e.getAgentId()));
         e.setCity(FormUtil.editValue("Stadt", e.getCity()));
@@ -148,6 +147,7 @@ public class EstateMenu {
             h.setPrice(FormUtil.editValue("Preis", h.getPrice()));
             h.setContractId(FormUtil.editValue("Id des korrespondierenden Vertrags", h.getContractId()));
             h.setGarden(FormUtil.editValue("Mit Garten ", h.getGarden()));
+            h.setContractId(FormUtil.editValue("Kaufvertrag ID", h.getContractId()));
             h.save();
         } else {
             Apartment a = oldIsHouse == e.getIsHouse() ? Apartment.load(e.getId()) : new Apartment();
@@ -157,6 +157,7 @@ public class EstateMenu {
             a.setRooms(FormUtil.editValue("Räume", a.getRooms()));
             a.setBalcony(FormUtil.editValue("Mit Balkon", a.getBalcony()));
             a.setElevator(FormUtil.editValue("Mit Aufzug", a.getElevator()));
+            a.setContractId(FormUtil.editValue("Mietvertrag ID", a.getContractId()));
             a.save();
         }
 
