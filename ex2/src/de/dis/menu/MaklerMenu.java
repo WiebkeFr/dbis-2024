@@ -60,9 +60,14 @@ public class MaklerMenu {
         m.setAddress(FormUtil.readString("Adresse"));
         m.setLogin(FormUtil.readString("Login"));
         m.setPassword(FormUtil.readString("Passwort"));
-        m.save();
 
-        System.out.println("Makler mit der ID "+m.getId()+" wurde erzeugt.\n");
+        Makler uniqueChecker = Makler.login(m.getLogin(), m.getPassword());
+        if (uniqueChecker.getId() == -1) {
+            m.save();
+            System.out.println("Makler mit der ID "+m.getId()+" wurde erzeugt.\n");
+        } else {
+            System.out.println("Der Login und/oder das Passort ist bereits vergeben.\nBitte versuchen Sie es mit anderen nochmal!\n");
+        }
     }
 
     /**
@@ -92,7 +97,7 @@ public class MaklerMenu {
         m.setId(id);
         m.delete();
 
-        System.out.println("Makler mit der ID "+m.getId()+" wurde gelöscht.");
+        System.out.println("Makler mit der ID "+m.getId()+" wurde gelöscht.\n");
     }
 }
 

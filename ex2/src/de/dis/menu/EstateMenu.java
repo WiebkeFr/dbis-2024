@@ -11,11 +11,10 @@ public class EstateMenu {
      */
     public static void showEstateMenu() {
         System.out.println("Bitte melden Sie sich an:");
-        int id = FormUtil.readInt("ID");
         String login = FormUtil.readString("Login");
         String pw = FormUtil.readString("Password");
 
-        Makler currentMakler = Makler.login(id, login, pw);
+        Makler currentMakler = Makler.login(login, pw);
         if (currentMakler.getId() == -1) {
             System.out.println("Der Login ist fehlgeschlagen.\nSie werden zum Hauptmenu zurückgeleitet.\n");
             return;
@@ -73,26 +72,42 @@ public class EstateMenu {
         e.save();
 
         if (isHouse) {
-            House h = new House();
-            h.setEstateId(e.getId());
-            h.setPrice(FormUtil.readInt("Preis"));
-            h.setGarden(FormUtil.readString("Mit Garten (ja/nein)").equals("ja"));
-            h.save();
-
+            newHouse(e.getId());
         } else {
-            Apartment a = new Apartment();
-            a.setEstateId(e.getId());
-            a.setRent(FormUtil.readInt("Miete"));
-            a.setFloor(FormUtil.readInt("Etage"));
-            a.setRooms(FormUtil.readInt("Räume"));
-            a.setBalcony(FormUtil.readString("Mit Balkon (ja/nein)").equals("ja"));
-            a.setElevator(FormUtil.readString("Mit Aufzug (ja/nein)").equals("ja"));
-            a.save();
+            newApartment(e.getId());
         }
-
-        String type = isHouse ? "Haus" : "Apartment";
-        System.out.println("Landgut (" + type + ") mit der ID "+e.getId()+" wurde erzeugt.\n");
     }
+
+    /**
+     * Legt einen neues Haus an, nachdem der Benutzer
+     * die entprechenden Daten eingegeben hat.
+     */
+    public static void newHouse(int estateId) {
+        House h = new House();
+        h.setEstateId(estateId);
+        h.setPrice(FormUtil.readInt("Preis"));
+        h.setGarden(FormUtil.readString("Mit Garten (ja/nein)").equals("ja"));
+        h.save();
+        System.out.println("Landgut (Haus) mit der ID "+ estateId +" wurde erzeugt.\n");
+    }
+
+    /**
+     * Legt einen neues Apartment an, nachdem der Benutzer
+     * die entprechenden Daten eingegeben hat.
+     */
+    public static void newApartment(int estateId) {
+        Apartment a = new Apartment();
+        a.setEstateId(estateId);
+        a.setRent(FormUtil.readInt("Miete"));
+        a.setFloor(FormUtil.readInt("Etage"));
+        a.setRooms(FormUtil.readInt("Räume"));
+        a.setBalcony(FormUtil.readString("Mit Balkon (ja/nein)").equals("ja"));
+        a.setElevator(FormUtil.readString("Mit Aufzug (ja/nein)").equals("ja"));
+        a.save();
+        System.out.println("Landgut (Apartment) mit der ID "+ estateId +" wurde erzeugt.\n");
+    }
+
+
 
     /**
      * Bearbeitet ein Landgut an, nachdem der Benutzer
@@ -102,6 +117,7 @@ public class EstateMenu {
         int id = FormUtil.readInt("Geben Sie die ID des zu bearbeitende Landgut ein");
         Estate e = Estate.load(id);
         boolean oldIsHouse = e.getIsHouse();
+        System.out.println("id "+ e.getId());
 
         e.setAgentId(FormUtil.editValue("Korrespondierender Makler (ID)", e.getAgentId()));
         e.setCity(FormUtil.editValue("Stadt", e.getCity()));
@@ -159,6 +175,6 @@ public class EstateMenu {
         e.setId(id);
         e.delete();
 
-        System.out.println("Landgut mit der ID "+e.getId()+" wurde gelöscht.");
+        System.out.println("Landgut mit der ID "+e.getId()+" wurde gelöscht.\n");
     }
 }

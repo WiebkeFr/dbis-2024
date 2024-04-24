@@ -107,23 +107,22 @@ public class Makler {
 	* @return Makler-Instanz
 	* @throws LoginError
 	* */
-	public static Makler login(int id, String login, String password) {
+	public static Makler login(String login, String password) {
 		try {
 			// Hole Verbindung
 			Connection con = DbConnectionManager.getInstance().getConnection();
 
 			// Erzeuge Anfrage
-			String selectSQL = "SELECT * FROM estateagent WHERE id = ? AND login = ? AND password = ?";
+			String selectSQL = "SELECT * FROM estateagent WHERE login = ? AND password = ?";
 			PreparedStatement pstmt = con.prepareStatement(selectSQL);
-			pstmt.setInt(1, id);
-			pstmt.setString(2, login);
-			pstmt.setString(3, password);
+			pstmt.setString(1, login);
+			pstmt.setString(2, password);
 
 			// Führe Anfrage aus
 			ResultSet rs = pstmt.executeQuery();
 			if (rs.next()) {
 				Makler ts = new Makler();
-				ts.setId(id);
+				ts.setId(rs.getInt("id"));
 				ts.setName(rs.getString("name"));
 				ts.setAddress(rs.getString("address"));
 				ts.setLogin(rs.getString("login"));
