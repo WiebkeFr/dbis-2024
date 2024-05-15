@@ -129,14 +129,12 @@ public class EstateMenu {
         // type of estate was edited:
         // case 1: apt -> house
         if (oldIsHouse != e.getIsHouse() && e.getIsHouse()) {
-            Apartment a = new Apartment();
-            a.setEstateId(e.getId());
+            Apartment a = Apartment.load(e.getId());
             a.delete();
 
         // case 2: house -> apt
         } else if (oldIsHouse != e.getIsHouse() && !e.getIsHouse()) {
-            House h = new House();
-            h.setEstateId(e.getId());
+            House h = House.load(e.getId());
             h.delete();
         }
 
@@ -145,7 +143,6 @@ public class EstateMenu {
             House h = oldIsHouse == e.getIsHouse() ? House.load(e.getId()) : new House();
             h.setEstateId(e.getId());
             h.setPrice(FormUtil.editValue("Preis", h.getPrice()));
-            h.setContractId(FormUtil.editValue("Id des korrespondierenden Vertrags", h.getContractId()));
             h.setGarden(FormUtil.editValue("Mit Garten ", h.getGarden()));
             h.setContractId(FormUtil.editValue("Kaufvertrag ID", h.getContractId()));
             h.save();
@@ -171,7 +168,7 @@ public class EstateMenu {
      * die entprechenden ID eingegeben hat.
      */
     public static void deleteEstate() {
-        int id = FormUtil.readInt("Geben Sie die ID des zu löschende Landgut ein (korrespondierende Verträger werden gelöscht)");
+        int id = FormUtil.readInt("Geben Sie die ID des zu löschenden Landgut ein");
         Estate e = new Estate();
         e.setId(id);
         e.delete();

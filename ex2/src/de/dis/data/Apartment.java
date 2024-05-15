@@ -10,7 +10,7 @@ public class Apartment {
     private boolean balcony;
     private boolean elevator;
     private int estateId;
-    private int contractId = -1;
+    private int contractId;
 
     public int getId() {
         return id;
@@ -116,7 +116,7 @@ public class Apartment {
     }
 
     /**
-     * Speichert das Apartment in der Datenbank. Ist noch keine ID vergeben
+     * Speichert das Apartments in der Datenbank. Ist noch keine ID vergeben
      * worden, wird die generierte Id von der DB geholt und dem Model übergeben.
      */
     public void save() {
@@ -128,7 +128,7 @@ public class Apartment {
             if (getId() == -1) {
                 // Achtung, hier wird noch ein Parameter mitgegeben,
                 // damit spC$ter generierte IDs zurC<ckgeliefert werden!
-                String insertSQL = "INSERT INTO apartment(floor, rent, rooms, balcony, elevator, estateid, contractid) VALUES (?, ?, ?, ?, ?, ?, ?)";
+                String insertSQL = "INSERT INTO apartment(floor, rent, rooms, balcony, elevator, estateid) VALUES (?, ?, ?, ?, ?, ?)";
 
                 PreparedStatement pstmt = con.prepareStatement(insertSQL,
                         Statement.RETURN_GENERATED_KEYS);
@@ -140,7 +140,6 @@ public class Apartment {
                 pstmt.setBoolean(4, getBalcony());
                 pstmt.setBoolean(5, getElevator());
                 pstmt.setInt(6, getEstateId());
-                pstmt.setInt(7, getContractId());
                 pstmt.executeUpdate();
 
                 // Hole die Id des engefC<gten Datensatzes
@@ -163,7 +162,11 @@ public class Apartment {
                 pstmt.setBoolean(4, getBalcony());
                 pstmt.setBoolean(5, getElevator());
                 pstmt.setInt(6, getEstateId());
-                pstmt.setInt(7, getContractId());
+                if(getContractId() == 0){
+                    pstmt.setNull(7, 0);
+                } else {
+                    pstmt.setInt(7, getContractId());
+                }
                 pstmt.setInt(8, getId());
                 pstmt.executeUpdate();
 
