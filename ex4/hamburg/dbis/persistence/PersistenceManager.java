@@ -21,7 +21,7 @@ public class PersistenceManager {
     ConcurrentHashMap<Integer, ArrayList<String>> finishedTransactions;
     private static final int BUFFER_LIMIT = 5;
     private static final String LOG_FILE = "database/log.txt";
-    private static final String DATA_PAGES = "database/pages/%.txt";
+    private static final String DATA_PAGES = "database/pages/%d.txt";
 
     static {
         try {
