@@ -1,0 +1,30 @@
+3,3,22,Gyro Gearloose
+2,4,35,Brigitta MacBridge
+4,1,5,Magica De Spell
+1,2,47,April, May, and June
+5,4,33,Professor Nefarious
+6,3,28,Beagle Boys
+7,2,49,Hustler Duck
+8,4,37,Rockhead Rooster
+9,3,28,Horace Horsecollar
+10,1,13,Scrooge McDuck
+11,2,41,O.K. Quack
+12,4,36,Bum Bum Ghigno
+13,3,26,Gladstone Gander
+14,1,1,Granny Beagle
+15,4,30,Granny Beagle
+16,2,44,Donna Duck
+17,3,24,Scuttle
+18,4,31,Dolly Paprika
+19,3,22,Doctor Vulter
+20,2,42,Daisy Duck
+21,1,5,Huey, Dewey, and Louie
+22,4,36,Humphrey Gokart
+23,3,23,José Carioca
+24,2,48,Flintheart Glomgold
+25,1,EOT
+26,4,35,Mortimer Mouse
+27,3,24,Dolly Paprika
+28,2,46,Trudy Van Tubb
+29,4,EOT
+30,2,43,Max Goof

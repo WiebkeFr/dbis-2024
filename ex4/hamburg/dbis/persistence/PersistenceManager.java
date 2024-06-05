@@ -91,25 +91,30 @@ public class PersistenceManager {
 
     private String[] getLastIds(String fileName){
         // helper function to get last used LSN and highest Transaction ID
-        String[] line = {"0", "0"};
+        String[] result = {"0", "0"};
         try {
             File myObj = new File(fileName);
             Scanner myReader = new Scanner(myObj);
             while (myReader.hasNextLine()) {
                 String[] nextLine = myReader.nextLine().split(",");
-                line[0] = nextLine[0];
+                // update LSN
+                String nextLSN = nextLine[0];
+                if (Integer.parseInt(nextLSN) > Integer.parseInt(result[0])) {
+                    result[0] = nextLSN;
+                }
+                // update Tid
                 String nextTid = nextLine[1];
-                if (Integer.parseInt(nextTid) > Integer.parseInt(line[1])) {
-                    line[1] = nextTid;
+                if (Integer.parseInt(nextTid) > Integer.parseInt(result[1])) {
+                    result[1] = nextTid;
                 }
             }
             myReader.close();
-            return line;
+            return result;
         } catch (FileNotFoundException e) {
             System.out.println("An error occurred.");
             e.printStackTrace();
         }
-        return line;
+        return result;
     }
 
     private void createOrWriteFile(String fileName, String data, boolean append) {

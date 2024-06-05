@@ -33,7 +33,7 @@ public class RecoveryManager {
     public void startRecovery() {
         // TODO
         Set<Integer> winners = analyzeLogsForWinners();
-        System.out.println(winners.size() + " winners");
+        System.out.println(winners.size() + " winners");        
         Map<Integer, List<String>> entriesToRedo = collectRedoEntries(winners);
         redoTransactions(entriesToRedo);
     }

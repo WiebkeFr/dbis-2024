@@ -1,0 +1,26 @@
+1,1,5,Magica De Spell
+2,2,30,Evronians
+3,2,25,Clarabelle Cow
+4,1,13,Scrooge McDuck
+5,2,22,Professor Nefarious
+6,2,20,Howard Rockerduck
+7,1,1,Granny Beagle
+8,2,32,Roberta
+9,1,5,Huey, Dewey, and Louie
+10,2,28,Magica De Spell
+11,1,EOT
+12,2,39,Dolly Paprika
+14,3,5,Magica De Spell
+13,4,39,Millie and Melody Mouse
+15,4,24,Minnie Mouse
+16,3,13,Scrooge McDuck
+17,4,33,Brigitta MacBridge
+18,4,28,Clarabelle Cow
+19,3,1,Granny Beagle
+20,4,20,Marcus Mouse
+21,4,27,Grandma Goofy
+22,3,5,Huey, Dewey, and Louie
+23,4,34,Daisy Duck
+24,4,20,Belle Duck
+25,3,EOT
+26,4,EOT
