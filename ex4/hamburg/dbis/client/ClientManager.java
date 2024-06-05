@@ -47,9 +47,9 @@ public class ClientManager {
         client1.toggleClientDebugMessages();
 
 
-        // Creating Client 2 (Pages 20 - 39)
+        // Creating Client 2 (Pages 20 - 29)
         int minPageClient2 = 20;
-        int maxPageClient2 = 40;
+        int maxPageClient2 = 30;
         Schedule schedule2 = Schedule.createSchedule()
                 .addOperation(rnd.nextInt(minPageClient2, maxPageClient2), exampleData.getRandomElement())
                 .addOperation(rnd.nextInt(minPageClient2, maxPageClient2), exampleData.getRandomElement())
@@ -63,9 +63,46 @@ public class ClientManager {
         Client client2 = new Client(clientid++, schedule2);
         client2.toggleClientDebugMessages();
 
+        // Creating Client 3 (Pages 30 - 39)
+        int minPageClient3 = 30;
+        int maxPageClient3 = 40;
+        Schedule schedule3 = Schedule.createSchedule()
+                .addOperation(rnd.nextInt(minPageClient3, maxPageClient3), exampleData.getRandomElement())
+                .addOperation(rnd.nextInt(minPageClient3, maxPageClient3), exampleData.getRandomElement())
+                .addOperation(rnd.nextInt(minPageClient3, maxPageClient3), exampleData.getRandomElement())
+                .addOperation(rnd.nextInt(minPageClient3, maxPageClient3), exampleData.getRandomElement())
+                .addOperation(rnd.nextInt(minPageClient3, maxPageClient3), exampleData.getRandomElement())
+                .addOperation(rnd.nextInt(minPageClient3, maxPageClient3), exampleData.getRandomElement())
+                .addOperation(rnd.nextInt(minPageClient3, maxPageClient3), exampleData.getRandomElement())
+                .addOperation(rnd.nextInt(minPageClient3, maxPageClient3), exampleData.getRandomElement());
+
+        Client client3 = new Client(clientid++, schedule3);
+        client3.toggleClientDebugMessages();
+
+
+        // Creating Client 4 (Pages 40 - 49)
+        int minPageClient4 = 40;
+        int maxPageClient4 = 50;
+        Schedule schedule4 = Schedule.createSchedule()
+                .addOperation(rnd.nextInt(minPageClient4, maxPageClient4), exampleData.getRandomElement())
+                .addOperation(rnd.nextInt(minPageClient4, maxPageClient4), exampleData.getRandomElement())
+                .addOperation(rnd.nextInt(minPageClient4, maxPageClient4), exampleData.getRandomElement())
+                .addOperation(rnd.nextInt(minPageClient4, maxPageClient4), exampleData.getRandomElement())
+                .addOperation(rnd.nextInt(minPageClient4, maxPageClient4), exampleData.getRandomElement())
+                .addOperation(rnd.nextInt(minPageClient4, maxPageClient4), exampleData.getRandomElement())
+                .addOperation(rnd.nextInt(minPageClient4, maxPageClient4), exampleData.getRandomElement())
+                .addOperation(rnd.nextInt(minPageClient4, maxPageClient4), exampleData.getRandomElement());
+
+        Client client4 = new Client(clientid++, schedule4);
+        client4.toggleClientDebugMessages();
+
+
+
 
         // Start the clients
         client1.start();
         client2.start();
+        client3.start();
+        client4.start();
     }
 }

@@ -1,0 +1,145 @@
+Nr 5.1.6
+
+docker exec -i mongo_db sh -c "mongoimport -u root -p password -c movies -d imdb --authenticationDatabase=admin --drop" < ./src/data/movies.json                                
+2024-06-05T14:28:57.390+0000	connected to: mongodb://localhost/
+2024-06-05T14:28:57.391+0000	dropping: imdb.movies
+2024-06-05T14:29:00.391+0000	imdb.movies	37.5MB
+2024-06-05T14:29:03.392+0000	imdb.movies	75.2MB
+2024-06-05T14:29:06.392+0000	imdb.movies	111MB
+2024-06-05T14:29:09.391+0000	imdb.movies	147MB
+2024-06-05T14:29:12.391+0000	imdb.movies	182MB
+2024-06-05T14:29:15.391+0000	imdb.movies	218MB
+2024-06-05T14:29:16.791+0000	imdb.movies	232MB
+2024-06-05T14:29:16.792+0000	234252 document(s) imported successfully. 0 document(s) failed to import.
+
+{
+  queryPlanner: {
+    plannerVersion: 1,
+    namespace: 'imdb.movies',
+    indexFilterSet: false,
+    parsedQuery: {
+      '$and': [ { rating: { '$lt': 7.78 } }, { rating: { '$gt': 6.14 } } ]
+    },
+    winningPlan: {
+      stage: 'COLLSCAN',
+      filter: {
+        '$and': [ { rating: { '$lt': 7.78 } }, { rating: { '$gt': 6.14 } } ]
+      },
+      direction: 'forward'
+    },
+    rejectedPlans: []
+  },
+  executionStats: {
+    executionSuccess: true,
+    nReturned: 94327,
+    executionTimeMillis: 180,
+    totalKeysExamined: 0,
+    totalDocsExamined: 234252,
+    executionStages: {
+      stage: 'COLLSCAN',
+      filter: {
+        '$and': [ { rating: { '$lt': 7.78 } }, { rating: { '$gt': 6.14 } } ]
+      },
+      nReturned: 94327,
+      executionTimeMillisEstimate: 14,
+      works: 234254,
+      advanced: 94327,
+      needTime: 139926,
+      needYield: 0,
+      saveState: 234,
+      restoreState: 234,
+      isEOF: 1,
+      direction: 'forward',
+      docsExamined: 234252
+    }
+  },
+  serverInfo: {
+    host: '6d2fa68d11e5',
+    port: 27017,
+    version: '4.4.29',
+    gitVersion: 'f4dda329a99811c707eb06d05ad023599f9be263'
+  },
+  ok: 1
+}
+
+{
+  queryPlanner: {
+    plannerVersion: 1,
+    namespace: 'imdb.movies',
+    indexFilterSet: false,
+    parsedQuery: {
+      '$and': [ { rating: { '$lt': 7.78 } }, { rating: { '$gt': 6.14 } } ]
+    },
+    winningPlan: {
+      stage: 'FETCH',
+      inputStage: {
+        stage: 'IXSCAN',
+        keyPattern: { rating: 1 },
+        indexName: 'rating_1',
+        isMultiKey: false,
+        multiKeyPaths: { rating: [] },
+        isUnique: false,
+        isSparse: false,
+        isPartial: false,
+        indexVersion: 2,
+        direction: 'forward',
+        indexBounds: { rating: [ '(6.14, 7.78)' ] }
+      }
+    },
+    rejectedPlans: []
+  },
+  executionStats: {
+    executionSuccess: true,
+    nReturned: 94327,
+    executionTimeMillis: 177,
+    totalKeysExamined: 94327,
+    totalDocsExamined: 94327,
+    executionStages: {
+      stage: 'FETCH',
+      nReturned: 94327,
+      executionTimeMillisEstimate: 31,
+      works: 94328,
+      advanced: 94327,
+      needTime: 0,
+      needYield: 0,
+      saveState: 94,
+      restoreState: 94,
+      isEOF: 1,
+      docsExamined: 94327,
+      alreadyHasObj: 0,
+      inputStage: {
+        stage: 'IXSCAN',
+        nReturned: 94327,
+        executionTimeMillisEstimate: 5,
+        works: 94328,
+        advanced: 94327,
+        needTime: 0,
+        needYield: 0,
+        saveState: 94,
+        restoreState: 94,
+        isEOF: 1,
+        keyPattern: { rating: 1 },
+        indexName: 'rating_1',
+        isMultiKey: false,
+        multiKeyPaths: { rating: [] },
+        isUnique: false,
+        isSparse: false,
+        isPartial: false,
+        indexVersion: 2,
+        direction: 'forward',
+        indexBounds: { rating: [ '(6.14, 7.78)' ] },
+        keysExamined: 94327,
+        seeks: 1,
+        dupsTested: 0,
+        dupsDropped: 0
+      }
+    }
+  },
+  serverInfo: {
+    host: '6d2fa68d11e5',
+    port: 27017,
+    version: '4.4.29',
+    gitVersion: 'f4dda329a99811c707eb06d05ad023599f9be263'
+  },
+  ok: 1
+}
