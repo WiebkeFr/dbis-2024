@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import com.mongodb.MongoClientSettings;
 import com.mongodb.MongoCredential;
@@ -58,17 +59,7 @@ public class MovieService extends MovieServiceBase {
 	public MovieService() {
 		// TODO see for example https://mongodb.github.io/mongo-java-driver/3.12/driver/tutorials/
 		// TODO: connect to MongoDB
-		String user = "root";     // the user name
-		String source = "admin";   // the source where the user is defined
-
-		char[] password = {'p', 'a', 's', 's', 'w', 'o', 'r', 'd'}; // the password as a character array
-
-		MongoCredential credential = MongoCredential.createCredential(user, source, password);
-		mongo = MongoClients.create(MongoClientSettings.builder()
-				.applyToClusterSettings(builder ->
-						builder.hosts(Arrays.asList(new ServerAddress("localhost", 27017))))
-				.credential(credential)
-				.build());
+		mongo = MongoClients.create("mongodb://root:password@localhost:27017");
 
 		// TODO Select database "imdb"
 		db = mongo.getDatabase("imdb");
@@ -100,7 +91,7 @@ public class MovieService extends MovieServiceBase {
 	 * @return the matching DBObject
 	 */
 	public Document findMovieByTitle(String title) {
-		//TODO : implement
+		// implemented
 		FindIterable<Document> result = movies.find(eq("title", title));
 		System.out.println("findMovieByTitle");
 		return result.first();
@@ -123,7 +114,7 @@ public class MovieService extends MovieServiceBase {
 	 * @return the FindIterable for the query
 	 */
 	public FindIterable<Document> getBestMovies(int minVotes, double minRating, int limit) {
-		//TODO : implement
+		// implemented
 		FindIterable<Document>  result = movies.find(and(gt("votes", minVotes), gt("rating", minRating)))
 				.sort(orderBy(descending("votes"), descending("rating")))
 				.limit(limit);
@@ -143,9 +134,10 @@ public class MovieService extends MovieServiceBase {
 	 */
 	public FindIterable<Document> getByGenre(String genreList, int limit) {
 		List<String> genres = Arrays.asList(genreList.split(","));
-		//TODO : implement
-		FindIterable<Document>  result = movies.find(in("genre", genres)).limit(limit);
-		System.out.println("getByGenre");
+		// implemented
+		genres = genres.stream().map(genre -> genre.trim()).collect(Collectors.toList());
+		FindIterable<Document>  result = movies.find(all("genre", genres)).limit(limit);
+		System.out.println("getByGenre " + genres);
 		return result;
 	}
 
@@ -162,7 +154,7 @@ public class MovieService extends MovieServiceBase {
 	 * @return the FindIterable for the query
 	 */
 	public FindIterable<Document> searchByPrefix(String titlePrefix, int limit) {
-		//TODO : implement
+		// implemented
 		// Create the query document and store it in the variable prefixQuery
 		Document prefixQuery = new Document("title", Pattern.compile("^" + titlePrefix + ".*"));
 		FindIterable<Document> result = movies.find(prefixQuery).limit(limit);
@@ -177,7 +169,7 @@ public class MovieService extends MovieServiceBase {
 	 * @return the FindIterable for the query
 	 */
 	public FindIterable getTweetedMovies() {
-		//TODO : implement
+		// implemented
 		FindIterable<Document> result = movies.find(exists("tweets"));
 		System.out.println("getTweetedMovies");
 		return result;
@@ -193,7 +185,7 @@ public class MovieService extends MovieServiceBase {
 	 *            the comment to save
 	 */
 	public void saveMovieComment(String id, String comment) {
-		// TODO implement
+		// implemented
 		Document query = new Document("_id", id);
 		Document update = new Document("$set", new Document("comment", comment));
 		movies.updateOne(query, update);
@@ -225,7 +217,7 @@ public class MovieService extends MovieServiceBase {
 	 * @return the FindIterable for the query
 	 */
 	public FindIterable getByTweetsKeywordRegex(String keyword, int limit) {
-		//TODO : implement
+		// implemented
 		Pattern regex = Pattern.compile(".*" + keyword + ".*", Pattern.CASE_INSENSITIVE);
 		Document query = new Document("tweets.text", new Document("$regex", regex));
 		FindIterable<Document> result = movies.find(query).limit(limit);
@@ -249,7 +241,7 @@ public class MovieService extends MovieServiceBase {
 		// Create a text index on the "text" property of tweets
 		tweets.createIndex(new Document("text", "text").append("user.name", "text"));
 		
-		// TODO: implement
+		// implemented
 		FindIterable<Document> result = tweets.find(text(query));
 		System.out.println("searchTweets");
 		return result;
@@ -264,7 +256,7 @@ public class MovieService extends MovieServiceBase {
 	 * @return the FindIterable for the query
 	 */
 	public FindIterable<Document>  getNewestTweets(int limit) {
-		//TODO : implement
+		// implemented
 		FindIterable<Document>  result = tweets.find().sort(descending("_id")).limit(limit);
 		System.out.println("getNewestTweets");
 		return result;
@@ -279,7 +271,7 @@ public class MovieService extends MovieServiceBase {
 	 * @return the FindIterable for the query
 	 */
 	public FindIterable<Document>  getGeotaggedTweets(int limit) {
-		//TODO : implement
+		// implemented
 		FindIterable<Document> result = tweets.find(and(exists("coordinates"), ne("coordinates", null))).limit(limit);
 		System.out.println("getGeotaggedTweets");
 		return result;
@@ -298,9 +290,9 @@ public class MovieService extends MovieServiceBase {
 	 */
 	public void saveFile(String name, InputStream inputStream, String contentType) {
 		GridFSUploadOptions options = new GridFSUploadOptions().chunkSizeBytes(358400).metadata(new Document("contentType", contentType));
-		// TODO IMPLEMENT
+		// IMPLEMENT
 		ObjectId fileId = fs.uploadFromStream(name, inputStream, options);
-		System.out.println(fileId);
+		System.out.println("saveFile " + fileId);
 	}
 
 	/**
@@ -312,11 +304,13 @@ public class MovieService extends MovieServiceBase {
 	 * @return The retrieved GridFS File
 	 */
 	public GridFSFile getFile(String name) {
-		// TODO: Implement
-		GridFSFile file = fs.find(eq("fileName", name)).first();
+		// implemented
+		GridFSFile file = fs.find(eq("filename", name)).first();
 		if (file == null) {
-			file = fs.find(eq("fileName", "sample.png")).first();
+			file = fs.find(eq("filename", "sample.png")).first();
+			System.out.println("sample.png");
 		}
+		System.out.println("getFile");
 		return file;
 	}
 
