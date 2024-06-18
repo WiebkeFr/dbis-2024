@@ -19,6 +19,7 @@ CREATE TABLE DW_Article (
   ArticleID SERIAL PRIMARY KEY,
   ProductGroup varchar(255) NOT NULL,
   ProductFamily varchar(255) NOT NULL,
+  ProductCategory varchar(255) NOT NULL,
   Name varchar(255) NOT NULL UNIQUE,
   Price double precision NOT NULL
 );
