@@ -41,14 +41,15 @@ def extract_transform_sql(read_connection):
     store_df.drop(columns=['ShopID'], inplace=True)
 
     article_query = """
-                    SELECT a.ArticleID, pg.Name as ProductGroup, pf.Name as ProductFamily, a.Name, a.Price
+                    SELECT a.ArticleID, pg.Name as ProductGroup, pf.Name as ProductFamily, a.Name, a.Price, pc.Name as ProductCategory
                     FROM Article a
                     JOIN ProductGroup pg ON a.ProductGroupID = pg.ProductGroupID
-                    JOIN ProductFamily pf ON pg.ProductFamilyID = pf.ProductFamilyID;
+                    JOIN ProductFamily pf ON pg.ProductFamilyID = pf.ProductFamilyID
+                    JOIN ProductCategory pc ON pf.ProductCategoryID = pc.ProductCategoryID;
                     """
     cursor.execute(article_query)
     article_data = cursor.fetchall()
-    article_df = pd.DataFrame(article_data, columns=['ArticleID', 'ProductGroup', 'ProductFamily', 'Name', 'Price'])
+    article_df = pd.DataFrame(article_data, columns=['ArticleID', 'ProductGroup', 'ProductFamily', 'Name', 'Price', 'ProductCategory'])
     article_df.drop(columns=['ArticleID'], inplace=True)
     cursor.close()
     return article_df, store_df
@@ -57,10 +58,10 @@ def extract_transform_sql(read_connection):
 def load_articles(connection, article_df):
     cursor = connection.cursor()
     insert_sql = '''
-    INSERT INTO DW_Article (ProductGroup, ProductFamily, Name, Price) 
-    VALUES (%s, %s, %s, %s)
+    INSERT INTO DW_Article (ProductGroup, ProductFamily, ProductCategory, Name, Price) 
+    VALUES (%s, %s, %s, %s, %s)
     '''
-    data_touples = [(row['ProductGroup'], row['ProductFamily'], row['Name'], row['Price']) for index, row in
+    data_touples = [(row['ProductGroup'], row['ProductFamily'], row['ProductCategory'], row['Name'], row['Price']) for index, row in
                     article_df.iterrows()]
     cursor.executemany(insert_sql, data_touples)
     cursor.close()
@@ -157,3 +158,4 @@ if __name__ == '__main__':
     load_stores(connection, store_df)
     transform_load_sales(connection, sales_df)
     connection.close()
+
