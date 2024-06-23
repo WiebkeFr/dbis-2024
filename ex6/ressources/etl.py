@@ -20,7 +20,7 @@ All umlaute have the same encoding value.
 
 def extract_csv(csv_file_path, encoding="utf-8"):
     print("Extract CSV")
-    data = pd.read_csv(csv_file_path, sep=";", encoding=encoding)
+    data = pd.read_csv(csv_file_path, sep=";", encoding=encoding, on_bad_lines='skip')
     return data
 
 
