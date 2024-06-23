@@ -45,7 +45,7 @@ def analysis(geo_choice, product_choice, time_choice):
     FROM DW_Sale sa
     JOIN DW_Shop sh ON sa.ShopID = sh.ShopID
     JOIN DW_Article ar ON sa.ArticleID = ar.ArticleID
-    GROUP BY sh.{geo_choices[geo_choice]["column"]}, ar.{product_choices[product_choice]["column"]}, {time_choice}
+    GROUP BY CUBE (sh.{geo_choices[geo_choice]["column"]}, ar.{product_choices[product_choice]["column"]}, {time_choice})
     ORDER BY sh.{geo_choices[geo_choice]["column"]}, ar.{product_choices[product_choice]["column"]}, {time_choice};
     """
     cursor.execute(query)
@@ -74,6 +74,8 @@ def analasys_interface():
     product_choice = make_choice(list(product_choices.keys()))
     time_choice = make_choice(list(time_choices.keys()))
     data = analysis(geo_choice, product_choice, time_choice)
+    for i, d in enumerate(data):
+        data[i] = ["_Total" if x is None else x for x in d]
     df = pd.DataFrame(data, columns=[geo_choice, product_choice, time_choice, "Revenue"])
     pivot_df = df.pivot_table(index=[geo_choice, product_choice], columns=time_choice, values="Revenue")
     print(pivot_df)
